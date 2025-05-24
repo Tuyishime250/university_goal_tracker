@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>University Application Checklist</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center py-8">
+  <div id="main-container" class="w-full max-w-6xl bg-gradient-to-br from-white via-blue-100 to-white rounded-3xl shadow-2xl p-10 transition-colors duration-300">
+    <!-- Header and filter controls -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
+      <h1 class="text-4xl font-extrabold text-center text-gray-900 tracking-tight drop-shadow-lg">University Application Checklist</h1>
+      <div class="flex flex-wrap gap-2 items-center justify-center">
+        <!-- Search, filter, and sort controls -->
+        <input id="search-input" type="text" placeholder="Search universities..." class="px-3 py-2 rounded-lg border border-blue-200 bg-white text-gray-800 focus:ring-2 focus:ring-blue-200" />
+        <select id="status-filter" class="px-2 py-2 rounded-lg border border-blue-200 bg-white text-blue-700 text-sm focus:ring-2 focus:ring-blue-200">
+          <option value="">All Statuses</option>
+          <option value="Not Started">Not Started</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Submitted">Submitted</option>
+          <option value="Accepted">Accepted</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+        <select id="sort-select" class="px-2 py-2 rounded-lg border border-blue-200 bg-white text-blue-700 text-sm focus:ring-2 focus:ring-blue-200">
+          <option value="default">Sort: Default</option>
+          <option value="alpha">A-Z</option>
+          <option value="status">By Status</option>
+          <option value="deadline">By Deadline</option>
+        </select>
+      </div>
+    </div>
+    <!-- University Links and Motivation Bot buttons -->
+    <div class="flex justify-end mb-4 gap-2">
+      <a href="links.html" class="px-4 py-2 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 transition">University Links</a>
+      <a href="bot.html" class="px-4 py-2 rounded-lg bg-green-500 text-white font-semibold hover:bg-green-600 transition">Motivation Letter Bot</a>
+    </div>
+    <!-- Progress summary section -->
+    <div id="progress-summary" class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div class="flex flex-wrap gap-4 items-center justify-center w-full">
+        <!-- Progress counters for each status -->
+        <div class="flex flex-col items-center">
+          <span class="text-2xl font-bold text-blue-700" id="total-count">0</span>
+          <span class="text-xs text-gray-500">Total</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <span class="text-2xl font-bold text-green-600" id="accepted-count">0</span>
+          <span class="text-xs text-gray-500">Accepted</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <span class="text-2xl font-bold text-blue-600" id="submitted-count">0</span>
+          <span class="text-xs text-gray-500">Submitted</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <span class="text-2xl font-bold text-yellow-500" id="progress-count">0</span>
+          <span class="text-xs text-gray-500">In Progress</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <span class="text-2xl font-bold text-gray-700" id="notstarted-count">0</span>
+          <span class="text-xs text-gray-500">Not Started</span>
+        </div>
+        <div class="flex flex-col items-center">
+          <span class="text-2xl font-bold text-red-500" id="rejected-count">0</span>
+          <span class="text-xs text-gray-500">Rejected</span>
+        </div>
+      </div>
+      <div class="w-full mt-4 md:mt-0">
+        <!-- Progress bar -->
+        <div class="w-full bg-blue-100 rounded-full h-4">
+          <div id="progress-bar" class="bg-blue-500 h-4 rounded-full transition-all duration-500" style="width:0%"></div>
+        </div>
+        <div class="text-xs text-center mt-1 text-blue-700" id="progress-label"></div>
+      </div>
+    </div>
+    <!-- Motivation and goal section -->
+    <div class="mb-8 p-6 rounded-2xl bg-gradient-to-br from-blue-50 via-white to-blue-100 shadow flex flex-col items-center">
+      <h2 class="text-2xl font-bold text-blue-700 mb-2">Stay Motivated!</h2>
+      <!-- Daily motivational quote -->
+      <div id="daily-quote" class="italic text-blue-800 text-center mb-3"></div>
+      <!-- Milestone celebration message -->
+      <div id="milestone-celebration" class="hidden mb-3 text-green-700 font-bold text-lg"></div>
+      <!-- Personal goal form -->
+      <form id="goal-form" class="flex flex-col items-center gap-2 w-full max-w-md mb-2" autocomplete="off">
+        <label for="goal-input" class="text-blue-700 font-semibold">Set a personal goal:</label>
+        <input id="goal-input" type="number" min="1" class="w-32 px-2 py-1 rounded-lg border border-blue-200 bg-white text-blue-700 text-center focus:ring-2 focus:ring-blue-200" placeholder="e.g. 5" aria-label="Set goal" />
+        <button type="submit" class="px-3 py-1 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 transition">Save Goal</button>
+      </form>
+      <div id="goal-progress" class="text-blue-700 font-semibold"></div>
+      <p class="text-gray-700 text-center max-w-2xl mt-2">Every application you submit is a step closer to your dreams. Remember, persistence pays off! Celebrate each milestone, and don’t hesitate to take breaks and reward yourself. You are capable of amazing things—keep going and apply to every opportunity!</p>
+      <ul class="mt-4 text-blue-700 text-sm list-disc list-inside">
+        <li>Set small goals and track your progress above.</li>
+        <li>Visualize your future at your dream university.</li>
+        <li>Remind yourself why you started this journey.</li>
+        <li>Connect with friends or mentors for support.</li>
+        <li>Every "no" brings you closer to a "yes"!</li>
+      </ul>
+    </div>
+    <!-- University list will be rendered here by JavaScript -->
+    <div id="university-list" class="flex flex-col gap-6">
+      
+    </div>
+    <div class="mt-auto mb-4 text-center text-gray-500 text-xs">
+      &copy; 2025 TuyishimeCedrick. All rights reserved.
+    </div>
+    
+  </div>
+  <script>
+   // --- University list data ---
+    const universities = [
+      "University of Cape Town (UCT)",
+      "University of Pretoria",
+      "University of Toronto",
+      "University of Melbourne",
+      "University of Warsaw",
+      "Bilkent University",
+      "Khalifa University",
+      "University of Debrecen",
+      "University of Southern Queensland",
+      "Berea College (Kentucky, USA)",
+      "United World Colleges (Various Locations)",
+      "Warren Wilson College (North Carolina, USA)",
+      "Coady International Institute",
+      "Southern New Hampshire University (SNHU), USA",
+      "University of Manitoba, Canada",
+      "University of Sydney, Australia",
+      "Carleton University, Canada",
+      "University of Bristol, UK",
+      "University of Dundee, Scotland",
+      "University of Groningen, Netherlands",
+      "La Roche University (USA)",
+      "Pace University (USA)",
+      "Diablo Valley College",
+      "Saint Leo University",
+      "University of Iowa",
+      "Illinois Wesleyan University",
+      "University of Dayton",
+      "Drexel University",
+      "SUNY",
+      "University of Delaware",
+      "University of Colorado Denver",
+      "California State University",
+      "University of Arkansas",
+      "Manaaki New Zealand Scholarships",
+      "Turkiye Burslari (Turkey Government)",
+      "Fulbright Foreign Student Program (USA)",
+      "University of Manchester - Humanitarian Scholarships",
+      "University of Tulsa - Refugee Scholarship",
+      "University of Arkansas - Rwanda Tuition Advantage",
+      "Illinois Wesleyan University - President's Scholarship",
+      "University of Dayton - Merit Scholarships",
+      "EARTH University",
+      "Hamad Bin Khalifa University (HBKU), Qatar",
+      "Quest University Canada",
+      "Toyohashi University of Technology, Japan",
+      "University of Westminster, United Kingdom",
+      "Northumbria University, United Kingdom",
+      "RMIT University, Australia",
+      "Limkokwing University of Creative Technology, Malaysia",
+      "The Open University, United Kingdom",
+      "University of South Africa (UNISA), South Africa",
+      "Korean public open university",
+      "Public university in Florida",
+      "American University of Beirut",
+      "University of Corridors (UNICORE Italy)",
+      "Arizona State University",
+      "Franklin Pierce University",
+      "Norfolk State University",
+      "The University of Oregon",
+      "The University of Technology Sydney",
+      "UTS College Foundation Studies"
+    ];
+
+    // --- Load and save checked (applied) universities from localStorage ---
+    function loadChecked() {
+      return JSON.parse(localStorage.getItem('appliedUniversities') || '{}');
+    }
+
+    function saveChecked(checked) {
+      localStorage.setItem('appliedUniversities', JSON.stringify(checked));
+    }
+
+    // --- Helper to get color for status ring ---
+    function getStatusColor(status) {
+      switch (status) {
+        case 'Accepted': return 'ring-4 ring-green-300';
+        case 'Rejected': return 'ring-4 ring-red-200';
+        case 'Submitted': return 'ring-4 ring-blue-300';
+        case 'In Progress': return 'ring-4 ring-yellow-200';
+        default: return '';
+      }
+    }
+    // --- Render the university list with all controls and details ---
+    function renderList() {
+      const checked = loadChecked();
+      const notes = loadNotes();
+      const statuses = loadStatuses();
+      const deadlines = loadDeadlines();
+      const links = loadLinks();
+      const files = loadFiles();
+      let filtered = universities.map((name, idx) => ({ name, idx }));
+      // Filter by search input
+      const search = document.getElementById('search-input').value.toLowerCase();
+      if (search) filtered = filtered.filter(u => u.name.toLowerCase().includes(search));
+      // Filter by status
+      const statusFilter = document.getElementById('status-filter').value;
+      if (statusFilter) filtered = filtered.filter(u => (statuses[u.idx] || 'Not Started') === statusFilter);
+     //sort logic
+      const sort = document.getElementById('sort-select').value;
+      if (sort === 'alpha') filtered.sort((a, b) => a.name.localeCompare(b.name));
+      if (sort === 'status') filtered.sort((a, b) => (statuses[a.idx] || '').localeCompare(statuses[b.idx] || ''));
+      if (sort === 'deadline') filtered.sort((a, b) => {
+        const da = deadlines[a.idx] ? new Date(deadlines[a.idx]) : new Date(8640000000000000);
+        const db = deadlines[b.idx] ? new Date(deadlines[b.idx]) : new Date(8640000000000000);
+        return da - db;
+      });
+      const list = document.getElementById('university-list');
+      list.innerHTML = '';
+      filtered.forEach(({ name, idx }) => {
+        // Collapsible/Expandable Card for each university
+        const card = document.createElement('div');
+        card.className = `relative flex flex-col bg-gradient-to-br from-white via-blue-50 to-white border border-blue-100 rounded-3xl shadow-xl p-0 min-h-[60px] min-w-[240px] max-w-full transition-transform hover:scale-105 hover:shadow-2xl group ${getStatusColor(statuses[idx])}`;
+        card.setAttribute('tabindex', '0'); // Accessibility: focusable
+        card.setAttribute('role', 'region');
+        card.setAttribute('aria-label', name);
+        // Header (always visible)
+        const header = document.createElement('div');
+        header.className = 'flex items-center justify-between w-full px-8 py-4 cursor-pointer select-none';
+        // University Name
+        const label = document.createElement('span');
+        label.textContent = name;
+        // If checked, show as strikethrough and faded
+        label.className = checkboxChecked(idx, checked) ? 'text-xl font-bold text-gray-400 line-through transition-colors' : 'text-xl font-bold text-gray-900 transition-colors';
+        // Status Dropdown (summary)
+        const statusSelect = document.createElement('select');
+        statusSelect.className = 'ml-4 px-2 py-1 rounded-lg border border-blue-200 bg-white text-blue-700 text-sm focus:ring-2 focus:ring-blue-200';
+        ['Not Started', 'In Progress', 'Submitted', 'Accepted', 'Rejected'].forEach(status => {
+          const option = document.createElement('option');
+          option.value = status;
+          option.textContent = status;
+          statusSelect.appendChild(option);
+        });
+        statusSelect.value = statuses[idx] || 'Not Started';
+        statusSelect.addEventListener('change', () => {
+          statuses[idx] = statusSelect.value;
+          saveStatuses(statuses);
+          renderList();
+        });
+        // Expand/Collapse Button
+        const toggleBtn = document.createElement('button');
+        toggleBtn.setAttribute('aria-label', 'Expand/Collapse details');
+        toggleBtn.className = 'ml-4 text-blue-600 text-2xl focus:outline-none focus:ring-2 focus:ring-blue-300';
+        toggleBtn.innerHTML = '<span aria-hidden="true">▼</span>';
+        // Checkbox for "applied"
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'ml-4 h-6 w-6 text-blue-400 accent-blue-400 focus:ring-2 focus:ring-blue-300';
+        checkbox.checked = checked[idx] || false;
+        checkbox.setAttribute('aria-label', 'Mark as applied');
+        checkbox.addEventListener('change', () => {
+          checked[idx] = checkbox.checked;
+          saveChecked(checked);
+          label.className = checkbox.checked ? 'text-xl font-bold text-gray-400 line-through transition-colors' : 'text-xl font-bold text-gray-900 transition-colors';
+          card.classList.toggle('opacity-60', checkbox.checked);
+        });
+        // Header children
+        header.appendChild(label);
+        header.appendChild(statusSelect);
+        header.appendChild(toggleBtn);
+        header.appendChild(checkbox);
+        // Details (collapsible)
+        const details = document.createElement('div');
+        details.className = 'w-full px-8 pb-6 hidden';
+        details.setAttribute('aria-hidden', 'true');
+        // Deadline input & countdown
+        const deadlineDiv = document.createElement('div');
+        deadlineDiv.className = 'mt-2 w-full flex flex-col items-center';
+        const deadlineInput = document.createElement('input');
+        deadlineInput.type = 'date';
+        deadlineInput.className = 'rounded-lg border border-blue-100 bg-blue-50 text-gray-800 p-1 text-sm focus:ring-2 focus:ring-blue-200';
+        deadlineInput.value = deadlines[idx] || '';
+        deadlineInput.addEventListener('change', () => {
+          deadlines[idx] = deadlineInput.value;
+          saveDeadlines(deadlines);
+          renderList();
+        });
+        deadlineDiv.appendChild(deadlineInput);
+        // Countdown to deadline
+        if (deadlineInput.value) {
+          const now = new Date();
+          const deadlineDate = new Date(deadlineInput.value);
+          const diff = deadlineDate - now;
+          let countdown = '';
+          if (diff > 0) {
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            countdown = days === 0 ? 'Deadline: Today!' : `Deadline in ${days} day${days !== 1 ? 's' : ''}`;
+          } else {
+            countdown = 'Deadline passed';
+          }
+          const countdownSpan = document.createElement('span');
+          countdownSpan.className = 'text-xs mt-1 text-blue-700 font-semibold';
+          countdownSpan.textContent = countdown;
+          deadlineDiv.appendChild(countdownSpan);
+        }
+        // Notes Area for user notes
+        const noteArea = document.createElement('textarea');
+        noteArea.className = 'mt-2 w-full rounded-lg border border-blue-100 bg-blue-50 text-gray-800 p-2 text-sm resize-none focus:ring-2 focus:ring-blue-200';
+        noteArea.rows = 2;
+        noteArea.placeholder = 'Add notes, deadlines, or reminders...';
+        noteArea.value = notes[idx] || '';
+        noteArea.setAttribute('aria-label', 'Notes');
+        noteArea.addEventListener('input', () => {
+          notes[idx] = noteArea.value;
+          saveNotes(notes);
+        });
+        // Link input for application portal
+        const linkInput = document.createElement('input');
+        linkInput.type = 'url';
+        linkInput.className = 'mt-2 w-full rounded-lg border border-blue-100 bg-blue-50 text-gray-800 p-2 text-sm focus:ring-2 focus:ring-blue-200';
+        linkInput.placeholder = 'Application portal link...';
+        linkInput.value = links[idx] || '';
+        linkInput.setAttribute('aria-label', 'Application portal link');
+        linkInput.addEventListener('input', () => {
+          links[idx] = linkInput.value;
+          saveLinks(links);
+        });
+        // File input for attaching files
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.className = 'mt-2 w-full text-sm';
+        fileInput.setAttribute('aria-label', 'Attach file');
+        fileInput.addEventListener('change', (e) => {
+          if (e.target.files.length > 0) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+              files[idx] = { name: file.name, data: evt.target.result };
+              saveFiles(files);
+              renderList();
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+        // File download link if file is attached
+        let fileLink = null;
+        if (files[idx]) {
+          fileLink = document.createElement('a');
+          fileLink.href = files[idx].data;
+          fileLink.download = files[idx].name;
+          fileLink.className = 'mt-1 text-xs text-blue-700 underline';
+          fileLink.textContent = `Download: ${files[idx].name}`;
+        }
+        // Append details
+        details.appendChild(deadlineDiv);
+        details.appendChild(noteArea);
+        details.appendChild(linkInput);
+        details.appendChild(fileInput);
+        if (fileLink) details.appendChild(fileLink);
+        // Toggle logic for expand/collapse
+        let expanded = false;
+        function toggleDetails() {
+          expanded = !expanded;
+          details.classList.toggle('hidden', !expanded);
+          details.setAttribute('aria-hidden', !expanded);
+          toggleBtn.innerHTML = expanded ? '<span aria-hidden="true">▲</span>' : '<span aria-hidden="true">▼</span>';
+        }
+        toggleBtn.addEventListener('click', toggleDetails);
+        header.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleDetails();
+          }
+        });
+        header.addEventListener('click', (e) => {
+          if (e.target === toggleBtn || e.target === header) toggleDetails();
+        });
+        // Card opacity for checked
+        if (checkbox.checked) {
+          card.classList.add('opacity-60');
+        }
+        // Subtle glowing border effect
+        card.classList.add('before:absolute','before:inset-0','before:rounded-3xl','before:border-2','before:border-blue-200','before:opacity-10','before:pointer-events-none');
+        // Compose card
+        card.appendChild(header);
+        card.appendChild(details);
+        list.appendChild(card);
+      });
+      updateProgressSummary();
+    }
+    // Helper to check if university is checked/applied
+    function checkboxChecked(idx, checked) {
+      return checked[idx] || false;
+    }
+    // --- Update progress summary and progress bar ---
+    function updateProgressSummary() {
+      const statuses = loadStatuses();
+      const total = universities.length;
+      let accepted = 0, submitted = 0, progress = 0, notstarted = 0, rejected = 0;
+      universities.forEach((_, idx) => {
+        const s = statuses[idx] || 'Not Started';
+        if (s === 'Accepted') accepted++;
+        else if (s === 'Submitted') submitted++;
+        else if (s === 'In Progress') progress++;
+        else if (s === 'Rejected') rejected++;
+        else notstarted++;
+      });
+      document.getElementById('total-count').textContent = total;
+      document.getElementById('accepted-count').textContent = accepted;
+      document.getElementById('submitted-count').textContent = submitted;
+      document.getElementById('progress-count').textContent = progress;
+      document.getElementById('notstarted-count').textContent = notstarted;
+      document.getElementById('rejected-count').textContent = rejected;
+      // Progress bar: percent of non-"Not Started"
+      const done = accepted + submitted + progress + rejected;
+      const percent = total ? Math.round((done / total) * 100) : 0;
+      document.getElementById('progress-bar').style.width = percent + '%';
+      document.getElementById('progress-label').textContent = percent + '% completed';
+    }
+    // --- Persistence for notes, statuses, deadlines, links, files ---
+    function loadNotes() { return JSON.parse(localStorage.getItem('universityNotes') || '{}'); }
+    function saveNotes(notes) { localStorage.setItem('universityNotes', JSON.stringify(notes)); }
+    function loadStatuses() { return JSON.parse(localStorage.getItem('universityStatuses') || '{}'); }
+    function saveStatuses(statuses) { localStorage.setItem('universityStatuses', JSON.stringify(statuses)); }
+    function loadDeadlines() { return JSON.parse(localStorage.getItem('universityDeadlines') || '{}'); }
+    function saveDeadlines(deadlines) { localStorage.setItem('universityDeadlines', JSON.stringify(deadlines)); }
+    function loadLinks() { return JSON.parse(localStorage.getItem('universityLinks') || '{}'); }
+    function saveLinks(links) { localStorage.setItem('universityLinks', JSON.stringify(links)); }
+    function loadFiles() { return JSON.parse(localStorage.getItem('universityFiles') || '{}'); }
+    function saveFiles(files) { localStorage.setItem('universityFiles', JSON.stringify(files)); }
+    // --- Search, filter, sort listeners ---
+    document.getElementById('search-input').addEventListener('input', renderList);
+    document.getElementById('status-filter').addEventListener('change', renderList);
+    document.getElementById('sort-select').addEventListener('change', renderList);
+    renderList();
+    // --- Motivation Section Logic ---
+    const quotes = [
+      "Believe in yourself and all that you are.",
+      "Success is the sum of small efforts, repeated day in and day out.",
+      "You are capable of amazing things.",
+      "Dream big, work hard, stay focused.",
+      "Every accomplishment starts with the decision to try.",
+      "Don’t watch the clock; do what it does. Keep going.",
+      "The future belongs to those who believe in the beauty of their dreams.",
+      "Persistence guarantees that results are inevitable.",
+      "Your only limit is your mind.",
+      "Great things never come from comfort zones."
+    ];
+    // Show a different motivational quote each day
+    function showDailyQuote() {
+      const today = new Date().toISOString().slice(0, 10);
+      // Use a hash of the date to pick a quote
+      let hash = 0;
+      for (let i = 0; i < today.length; i++) hash += today.charCodeAt(i);
+      const quote = quotes[hash % quotes.length];
+      document.getElementById('daily-quote').textContent = `“${quote}”`;
+    }
+    // --- Milestone Celebration ---
+    function showMilestoneCelebration(percent) {
+      const milestoneDiv = document.getElementById('milestone-celebration');
+      if (percent === 100) {
+        milestoneDiv.textContent = '🎉 Congratulations! You have completed all your applications!';
+        milestoneDiv.classList.remove('hidden');
+      } else if (percent >= 75) {
+        milestoneDiv.textContent = '👏 Amazing! You are over 75% done!';
+        milestoneDiv.classList.remove('hidden');
+      } else if (percent >= 50) {
+        milestoneDiv.textContent = '💪 Halfway there! Keep going!';
+        milestoneDiv.classList.remove('hidden');
+      } else if (percent >= 25) {
+        milestoneDiv.textContent = '🚀 Great start! You have completed 25% of your applications!';
+        milestoneDiv.classList.remove('hidden');
+      } else {
+        milestoneDiv.classList.add('hidden');
+      }
+    }
+    // --- Personal Goal Setting ---
+    function loadGoal() {
+      return parseInt(localStorage.getItem('personalGoal') || '0', 10);
+    }
+    function saveGoal(goal) {
+      localStorage.setItem('personalGoal', goal);
+    }
+    function updateGoalProgress() {
+      const goal = loadGoal();
+      if (!goal || isNaN(goal)) {
+        document.getElementById('goal-progress').textContent = '';
+        return;
+      }
+      const statuses = loadStatuses();
+      let done = 0;
+      universities.forEach((_, idx) => {
+        const s = statuses[idx] || 'Not Started';
+        if (s !== 'Not Started') done++;
+      });
+      document.getElementById('goal-progress').textContent = `Goal: Apply to ${goal} universities. Progress: ${done}/${goal}`;
+    }
+    document.getElementById('goal-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const val = parseInt(document.getElementById('goal-input').value, 10);
+      if (val > 0) {
+        saveGoal(val);
+        updateGoalProgress();
+        document.getElementById('goal-input').value = '';
+      }
+    });
+    // --- Patch updateProgressSummary to show milestones and goal progress ---
+    const origUpdateProgressSummary = updateProgressSummary;
+    updateProgressSummary = function() {
+      origUpdateProgressSummary();
+      // Milestone
+      const statuses = loadStatuses();
+      const total = universities.length;
+      let done = 0;
+      universities.forEach((_, idx) => {
+        const s = statuses[idx] || 'Not Started';
+        if (s !== 'Not Started') done++;
+      });
+      const percent = total ? Math.round((done / total) * 100) : 0;
+      showMilestoneCelebration(percent);
+      updateGoalProgress();
+    };
+    // --- User Customization Logic ---
+    function loadCustomization() {
+      return JSON.parse(localStorage.getItem('userCustomization') || '{}');
+    }
+    function saveCustomization(obj) {
+      localStorage.setItem('userCustomization', JSON.stringify(obj));
+    }
+    function applyCustomization() {
+      const { theme, fontSize, layout } = loadCustomization();
+      // Theme
+      document.body.classList.remove('theme-blue', 'theme-green', 'theme-purple', 'theme-pink');
+      if (theme && theme !== 'default') document.body.classList.add('theme-' + theme);
+      // Font size
+      document.body.classList.remove('text-base', 'text-lg', 'text-xl');
+      document.body.classList.add('text-' + (fontSize || 'base'));
+      // Set selects
+      document.getElementById('theme-select').value = theme || 'default';
+      document.getElementById('font-size-select').value = fontSize || 'base';
+      document.getElementById('layout-select').value = layout || 'grid';
+    }
+    document.getElementById('customize-form').addEventListener('change', function() {
+      const theme = document.getElementById('theme-select').value;
+      const fontSize = document.getElementById('font-size-select').value;
+      const layout = document.getElementById('layout-select').value;
+      saveCustomization({ theme, fontSize, layout });
+      applyCustomization();
+    });
+    // --- Add theme styles ---
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .theme-blue { --tw-gradient-from: #dbeafe; --tw-gradient-to: #3b82f6; }
+      .theme-green { --tw-gradient-from: #d1fae5; --tw-gradient-to: #10b981; }
+      .theme-purple { --tw-gradient-from: #ede9fe; --tw-gradient-to: #8b5cf6; }
+      .theme-pink { --tw-gradient-from: #fce7f3; --tw-gradient-to: #ec4899; }
+      .text-lg { font-size: 1.125rem !important; }
+      .text-xl { font-size: 1.25rem !important; }
+    `;
+    document.head.appendChild(style);
+    // --- On load ---
+    applyCustomization();
+    showDailyQuote();
+    updateGoalProgress();
+  </script>
+</body>
+</html>

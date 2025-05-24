@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University & Scholarship Links</title>
+    <!-- Google Fonts for a nice look -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+     
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(120deg, #f0f4f8 0%, #e0eafc 100%);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 32px 24px;
+        }
+        h1 {
+            text-align: center;
+            color: #2a5298;
+            margin-bottom: 24px;
+            letter-spacing: 1px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 18px 0;
+            padding: 16px 20px;
+            background: #f7faff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(42,82,152,0.07);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+            animation: fadeInUp 0.7s;
+        }
+        li:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 6px 20px rgba(42,82,152,0.13);
+            background: #eaf1fb;
+        }
+        a {
+            color: #2a5298;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.08em;
+            transition: color 0.2s;
+        }
+        a:hover {
+            color: #1e3c72;
+            text-decoration: underline;
+        }
+        .edit-btn {
+            background: #2a5298;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 16px;
+            cursor: pointer;
+            font-size: 0.98em;
+            margin-left: 18px;
+            transition: background 0.2s;
+        }
+        .edit-btn:hover {
+            background: #1e3c72;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .edit-input {
+            font-size: 1em;
+            padding: 6px 10px;
+            border-radius: 5px;
+            border: 1px solid #b0c4de;
+            margin-right: 10px;
+        }
+        .save-btn {
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 16px;
+            cursor: pointer;
+            font-size: 0.98em;
+            margin-left: 8px;
+            transition: background 0.2s;
+        }
+        .save-btn:hover {
+            background: #357a38;
+        }
+        footer {
+            text-align: center;
+            color: #888;
+            font-size: 0.98em;
+            margin-top: 32px;
+        }
+    </style>
+</head>
+<body>
+   
+    <div class="container">
+        <h1>University  Links</h1>
+        <ul id="links-list">
+           <!-- the list of universities will show up here, thanks to the JavaScript below! -->
+        </ul>
+    </div>
+    <footer>
+        &copy; 2025 TuyishimeCedrick. All rights reserved.
+    </footer>
+    <script>
+        // Those are  nuts.
+        // The 'links' array below is just my big list of universities and their websites.
+        const links = [
+            { name: "University of Cape Town (UCT)", url: "https://www.uct.ac.za/" },
+            { name: "University of Pretoria", url: "https://www.up.ac.za/" },
+            { name: "University of Toronto", url: "https://www.utoronto.ca/" },
+            { name: "University of Melbourne", url: "https://www.unimelb.edu.au/" },
+            { name: "University of Warsaw", url: "https://en.uw.edu.pl/" },
+            { name: "Bilkent University", url: "https://w3.bilkent.edu.tr/" },
+            { name: "Khalifa University", url: "https://www.ku.ac.ae/" },
+            { name: "University of Debrecen", url: "https://unideb.hu/en" },
+            { name: "University of Southern Queensland", url: "https://www.unisq.edu.au/" },
+            { name: "Berea College (Kentucky, USA)", url: "https://www.berea.edu/" },
+            { name: "United World Colleges (Various Locations)", url: "https://www.uwc.org/" },
+            { name: "Warren Wilson College (North Carolina, USA)", url: "https://www.warren-wilson.edu/" },
+            { name: "Coady International Institute", url: "https://coady.stfx.ca/" },
+            { name: "Southern New Hampshire University (SNHU), USA", url: "https://www.snhu.edu/" },
+            { name: "University of Manitoba, Canada", url: "https://umanitoba.ca/" },
+            { name: "University of Sydney, Australia", url: "https://www.sydney.edu.au/" },
+            { name: "Carleton University, Canada", url: "https://carleton.ca/" },
+            { name: "University of Bristol, UK", url: "https://www.bristol.ac.uk/" },
+            { name: "University of Dundee, Scotland", url: "https://www.dundee.ac.uk/" },
+            { name: "University of Groningen, Netherlands", url: "https://www.rug.nl/" },
+            { name: "La Roche University (USA)", url: "https://www.laroche.edu/" },
+            { name: "Pace University (USA)", url: "https://www.pace.edu/" },
+            { name: "Diablo Valley College", url: "https://www.dvc.edu/" },
+            { name: "Saint Leo University", url: "https://www.saintleo.edu/" },
+            { name: "University of Iowa", url: "https://uiowa.edu/" },
+            { name: "Illinois Wesleyan University", url: "https://www.iwu.edu/" },
+            { name: "University of Dayton", url: "https://udayton.edu/" },
+            { name: "Drexel University", url: "https://drexel.edu/" },
+            { name: "SUNY (State University of New York)", url: "https://www.suny.edu/" },
+            { name: "University of Delaware", url: "https://www.udel.edu/" },
+            { name: "University of Colorado Denver", url: "https://www.ucdenver.edu/" },
+            { name: "California State University", url: "https://www.calstate.edu/" },
+            { name: "University of Arkansas", url: "https://www.uark.edu/" },
+            { name: "Manaaki New Zealand Scholarships", url: "https://www.nzscholarships.govt.nz/" },
+            { name: "Turkiye Burslari (Turkey Government Scholarships)", url: "https://www.turkiyeburslari.gov.tr/" },
+            { name: "Fulbright Foreign Student Program (USA)", url: "https://foreign.fulbrightonline.org/" },
+            { name: "University of Manchester - Humanitarian Scholarships", url: "https://www.manchester.ac.uk/study/international/finance-and-scholarships/scholarships/humanitarian/" },
+            { name: "University of Tulsa - Refugee Scholarship", url: "https://utulsa.edu/" },
+            { name: "University of Arkansas - Rwanda Tuition Advantage", url: "https://international.uark.edu/students/scholarships.php" },
+            { name: "Illinois Wesleyan University - President's Scholarship", url: "https://www.iwu.edu/international/admissions.html" },
+            { name: "University of Dayton - Merit Scholarships", url: "https://udayton.edu/" },
+            { name: "EARTH University", url: "https://www.earth.ac.cr/en/" },
+            { name: "Hamad Bin Khalifa University (HBKU), Qatar", url: "https://www.hbku.edu.qa/" },
+            { name: "Quest University Canada", url: "https://questu.ca/" },
+            { name: "Toyohashi University of Technology, Japan", url: "https://www.tut.ac.jp/english/" },
+            { name: "University of Westminster, United Kingdom", url: "https://www.westminster.ac.uk/" },
+            { name: "Northumbria University, United Kingdom", url: "https://www.northumbria.ac.uk/" },
+            { name: "RMIT University, Australia", url: "https://www.rmit.edu.au/" },
+            { name: "Limkokwing University of Creative Technology, Malaysia", url: "https://www.limkokwing.net/" },
+            { name: "The Open University, United Kingdom", url: "https://www.open.ac.uk/" },
+            { name: "University of South Africa (UNISA), South Africa", url: "https://www.unisa.ac.za/" },
+            { name: "Korean public open university", url: "https://www.knou.ac.kr/" },
+            { name: "Public university in Florida", url: "https://www.ufl.edu/" },
+            { name: "American University of Beirut", url: "https://www.aub.edu.lb/" },
+            { name: "University of Corridors (UNICORE Italy)", url: "https://universitycorridors.unhcr.it/" },
+            { name: "Arizona State University", url: "https://www.asu.edu/" },
+            { name: "Franklin Pierce University", url: "https://www.franklinpierce.edu/" },
+            { name: "Norfolk State University", url: "https://www.nsu.edu/" },
+            { name: "The University of Oregon", url: "https://www.uoregon.edu/" },
+            { name: "The University of Technology Sydney", url: "https://www.uts.edu.au/" },
+            { name: "UTS College Foundation Studies", url: "https://utscollege.edu.au/" }
+        ];
+        const list = document.getElementById('links-list');
+        // This function puts all my universities on the page.
+        // It also adds the Visit and Edit buttons for each one.
+        function renderLinks() {
+            list.innerHTML = '';
+            links.forEach((link, idx) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span class="link-name">${link.name}</span>
+                    <span>
+                        <button class="edit-btn" onclick="window.open('${link.url}', '_blank')">Visit</button>
+                        <button class="edit-btn" onclick="editLink(${idx})">Edit</button>
+                    </span>
+                `;
+                list.appendChild(li);
+            });
+        }
+        // This function lets me edit a university's name or link.
+        // When I click Edit, it swaps the text for input boxes.
+        window.editLink = function(idx) {
+            const li = list.children[idx];
+            const link = links[idx];
+            li.innerHTML = `
+                <input class="edit-input" type="text" value="${link.name}" id="edit-name-${idx}" />
+                <input class="edit-input" type="text" value="${link.url}" id="edit-url-${idx}" />
+                <button class="save-btn" onclick="saveLink(${idx})">Save</button>
+            `;
+        };
+        // This function saves my edits and puts the updated info back in the list.
+        window.saveLink = function(idx) {
+            const name = document.getElementById(`edit-name-${idx}`).value;
+            const url = document.getElementById(`edit-url-${idx}`).value;
+            links[idx] = { name, url };
+            renderLinks();
+        };
+        // This line actually shows my list when the page loads.
+        renderLinks();
+    </script>
+</body>
+</html>

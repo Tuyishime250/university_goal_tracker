@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Motivation Letter Bot</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-blue-100 via-white to-green-100 min-h-screen flex items-center justify-center">
+  <div class="w-full max-w-md mx-auto bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-6 border border-blue-200 relative">
+    <h1 class="text-3xl font-extrabold text-center mb-4 text-blue-800 tracking-tight drop-shadow">Motivation Letter Tutor Bot</h1>
+    <div id="chat" class="h-96 overflow-y-auto border border-blue-100 rounded-lg p-3 bg-white/70 mb-4 flex flex-col space-y-2 transition-all"></div>
+    <div id="options" class="flex flex-col space-y-2"></div>
+    <div id="warning" class="hidden text-red-600 font-semibold mt-2 text-center"></div>
+    <div class="flex flex-row justify-between items-center mt-4 space-x-2">
+      <button id="downloadBtn" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition shadow">Download Chat</button>
+      <button id="scrollBtn" class="bg-blue-300 hover:bg-blue-400 text-blue-900 font-semibold py-2 px-4 rounded-lg transition shadow">Scroll to Bottom</button>
+    </div>
+    <footer class="text-xs text-gray-400 text-center mt-4">&copy; 2025 Motivation Letter Tutor Bot</footer>
+  </div>
+  <script>
+    // Predefined conversation steps and options
+    const steps = [
+      {
+        bot: "Welcome! I am your Motivation Letter Tutor. Ready to learn how to write a great motivation letter?",
+        options: ["Yes, let's start!", "No, exit"]
+      },
+      {
+        bot: "Great! What would you like to do first?",
+        options: [
+          "What is a motivation letter?",
+          "Difference: Motivation vs Cover Letter",
+          "Checklist before writing",
+          "Show structure",
+          "Formatting tips",
+          "Common mistakes",
+          "How to stand out",
+          "Show me an example",
+          "Quiz me!",
+          "Summary of key points",
+          "Exit"
+        ]
+      },
+      {
+        bot: "A motivation letter is a document you write when applying for a university, job, or scholarship to explain why you're applying, who you are, and why you’re a good fit. Would you like to know more?",
+        options: ["Difference: Motivation vs Cover Letter", "Checklist before writing", "Back", "Menu"]
+      },
+      {
+        bot: "Motivation Letter vs Cover Letter:\n\nMotivation Letter: Used for university, scholarships, NGOs, focuses on your goals, passion, and personal journey.\nCover Letter: Used mainly for jobs, focuses on your experience and job fit.\n\nWould you like to see a comparison table?",
+        options: ["Show table", "Back", "Menu"]
+      },
+      {
+        bot: "| Motivation Letter | Cover Letter |\n|-------------------|--------------|\n| University, scholarships, NGOs | Jobs |\n| Your goals, passion, journey | Experience, job fit |\n| 1+ page | 0.5-1 page |\n\nWhat next?",
+        options: ["Checklist before writing", "Show structure", "Back", "Menu"]
+      },
+      {
+        bot: "Checklist before writing:\n- Why do I want this opportunity?\n- What experiences prove my motivation?\n- What makes me unique?\n- How can I contribute?\n\nReady to see the structure?",
+        options: ["Show structure", "Formatting tips", "Back", "Menu"]
+      },
+      {
+        bot: "Structure:\n1. Introduction: Who are you? Why are you writing?\n2. Body: Background, experience, motivation, fit\n3. Conclusion: Enthusiasm, request, sign off\n\nWant details for each section?",
+        options: ["Show details", "Formatting tips", "Back", "Menu"]
+      },
+      {
+        bot: "Formatting tips:\n- Length: 1 page (500–700 words)\n- Font: Arial or Times New Roman, size 11/12\n- Margins: 1 inch\n- Spacing: 1.15 or 1.5\n\nWhat next?",
+        options: ["Common mistakes", "How to stand out", "Back", "Menu"]
+      },
+      {
+        bot: "Common mistakes:\n- Being too generic\n- Repeating your CV\n- Using clichés\n- Lack of structure\n- Typos/grammar\n- Too formal/casual\n\nWant tips to avoid them?",
+        options: ["Tips to avoid mistakes", "How to stand out", "Back", "Menu"]
+      },
+      {
+        bot: "Tips to avoid mistakes:\n- Be specific and original\n- Add emotion and insight\n- Use clear structure\n- Proofread carefully\n- Find a balanced tone\n\nWhat next?",
+        options: ["How to stand out", "Show me an example", "Back", "Menu"]
+      },
+      {
+        bot: "How to stand out:\n- Tell a personal story\n- Show passion with examples\n- Mention what you’ll contribute\n- Use specific details\n- Tailor each letter\n- End with confidence\n- Get feedback before sending\n\nWant to see an example?",
+        options: ["Show me an example", "Quiz me!", "Back", "Menu"]
+      },
+      {
+        bot: `Example Motivation Letter (Full):\n\nDear Admissions Committee,\n\nI am writing to express my strong interest in the Master of Data Science program at ABC University. Growing up in a rural village where electricity was unstable, I became obsessed with understanding how systems work. I remember fixing my family's broken radio using a plastic spoon and copper wire. This curiosity led me to study electrical engineering.\n\nI hold a Bachelor’s degree in Computer Science from the University of Rwanda, where I graduated top of my class. My academic journey was marked by hands-on projects, including building a machine learning model to predict student dropouts. In addition to coursework, I interned at XYZ Tech, where I developed a dashboard for monitoring real-time analytics. These experiences have built my foundation in data analysis and machine learning.\n\nWhat attracts me most to ABC University is its interdisciplinary approach to data science and the opportunity to learn from world-class faculty like Dr. Jane Smith, whose research in ethical AI aligns with my interests. I am particularly drawn to your capstone project system, as it encourages real-world problem-solving in teams — a skill I value highly.\n\nMy ultimate goal is to leverage data science to improve education systems across Africa. I believe that by analyzing student data, we can build better retention models and personalize learning. This program is a critical step toward equipping me with the tools to make this vision a reality.\n\nThank you for considering my application. I am confident that my academic background, experience, and deep motivation make me a strong candidate for this program. I look forward to the opportunity to contribute and grow at ABC University.\n\nSincerely,\nJohn Doe\n\nWhat would you like to do next?`,
+        options: ["Quiz me!", "Summary of key points", "Back", "Menu"]
+      },
+      {
+        bot: "Quiz time!\n\nQuestion: What is the main difference between a motivation letter and a cover letter?",
+        options: [
+          "Motivation letter: goals and passion; Cover letter: job fit",
+          "They are the same",
+          "Motivation letter is always shorter"
+        ]
+      },
+      {
+        bot: "Correct! Motivation letter focuses on your goals and passion; cover letter focuses on job fit.\n\nNext question: What is one way to make your letter stand out?",
+        options: [
+          "Use a personal story",
+          "Copy from the internet",
+          "Use only buzzwords"
+        ]
+      },
+      {
+        bot: "Correct! Using a personal story makes your letter unique.\n\nWould you like to try the quiz again or return to the menu?",
+        options: ["Quiz me!", "Menu"]
+      },
+      {
+        bot: "Summary of key points:\n- Be specific and personal\n- Show your passion with examples\n- Structure your letter clearly\n- Avoid common mistakes\n- Tailor each letter\n- Proofread and get feedback\n\nWould you like to restart or exit?",
+        options: ["Restart", "Exit"]
+      }
+    ];
+
+    // Map option text to next step index
+    const optionMap = {
+      0: {"Yes, let's start!": 1, "No, exit": -1},
+      1: {
+        "What is a motivation letter?": 2,
+        "Difference: Motivation vs Cover Letter": 3,
+        "Checklist before writing": 5,
+        "Show structure": 6,
+        "Formatting tips": 7,
+        "Common mistakes": 8,
+        "How to stand out": 10,
+        "Show me an example": 11,
+        "Quiz me!": 12,
+        "Summary of key points": 16,
+        "Exit": -1
+      },
+      2: {"Difference: Motivation vs Cover Letter": 3, "Checklist before writing": 5, "Back": 1, "Menu": 1},
+      3: {"Show table": 4, "Back": 1, "Menu": 1},
+      4: {"Checklist before writing": 5, "Show structure": 6, "Back": 3, "Menu": 1},
+      5: {"Show structure": 6, "Formatting tips": 7, "Back": 1, "Menu": 1},
+      6: {"Show details": 5, "Formatting tips": 7, "Back": 1, "Menu": 1},
+      7: {"Common mistakes": 8, "How to stand out": 10, "Back": 1, "Menu": 1},
+      8: {"Tips to avoid mistakes": 9, "How to stand out": 10, "Back": 1, "Menu": 1},
+      9: {"How to stand out": 10, "Show me an example": 11, "Back": 1, "Menu": 1},
+      10: {"Show me an example": 11, "Quiz me!": 12, "Back": 1, "Menu": 1},
+      11: {"Quiz me!": 12, "Summary of key points": 16, "Back": 1, "Menu": 1},
+      12: {
+        "Motivation letter: goals and passion; Cover letter: job fit": 13,
+        "They are the same": 12,
+        "Motivation letter is always shorter": 12
+      },
+      13: {
+        "Use a personal story": 14,
+        "Copy from the internet": 13,
+        "Use only buzzwords": 13
+      },
+      14: {"Quiz me!": 12, "Menu": 1},
+      16: {"Restart": 1, "Exit": -1}
+    };
+
+    let currentStep = 0;
+    let lastBotMessage = steps[0].bot;
+    const chat = document.getElementById('chat');
+    const optionsDiv = document.getElementById('options');
+    const warningDiv = document.getElementById('warning');
+
+    // --- New Features ---
+    // Save chat history and allow user to download it
+    let chatHistory = [];
+    // Enhanced chat bubbles
+    function addBotMessage(message) {
+      lastBotMessage = message;
+      const msg = document.createElement('div');
+      msg.className = 'bg-blue-100 text-blue-900 p-3 rounded-lg self-start shadow-sm max-w-[85%]';
+      msg.innerHTML = message.replace(/\n/g, '<br>');
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+      chatHistory.push({role: 'bot', text: message});
+    }
+    function addUserMessage(message) {
+      const msg = document.createElement('div');
+      msg.className = 'bg-green-200 text-green-900 p-3 rounded-lg self-end shadow-sm max-w-[85%]';
+      msg.textContent = message;
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+      chatHistory.push({role: 'user', text: message});
+    }
+    // Download chat history as text
+    function downloadChat() {
+      const text = chatHistory.map(e => (e.role === 'bot' ? 'Bot: ' : 'You: ') + e.text).join('\n\n');
+      const blob = new Blob([text], {type: 'text/plain'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'motivation_letter_bot_chat.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+    // Move button creation to after DOM loads
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('downloadBtn').onclick = downloadChat;
+      document.getElementById('scrollBtn').onclick = () => {
+        chat.scrollTop = chat.scrollHeight;
+      };
+    });
+
+    function showOptions(options) {
+      optionsDiv.innerHTML = '';
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition shadow hover:scale-105 active:scale-95';
+        btn.textContent = opt;
+        btn.onclick = () => handleOption(opt);
+        optionsDiv.appendChild(btn);
+      });
+      // Add repeat and back buttons if not already present
+      if (!options.includes('Repeat last message')) {
+        const repeatBtn = document.createElement('button');
+        repeatBtn.className = 'bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg transition shadow hover:scale-105 active:scale-95';
+        repeatBtn.textContent = 'Repeat last message';
+        repeatBtn.onclick = () => addBotMessage(lastBotMessage);
+        optionsDiv.appendChild(repeatBtn);
+      }
+    }
+
+    function handleOption(option) {
+      warningDiv.classList.add('hidden');
+      if (option === 'Back') {
+        currentStep = Math.max(0, currentStep - 1);
+      } else if (option === 'Menu') {
+        currentStep = 1;
+      } else if (option === 'Exit') {
+        currentStep = -1;
+      } else if (option === 'Repeat last message') {
+        addBotMessage(lastBotMessage);
+        return;
+      } else {
+        addUserMessage(option); // <-- Ensure user message is shown
+        currentStep = optionMap[currentStep][option];
+      }
+      if (currentStep === -1) {
+        addBotMessage('Thank you for using the Motivation Letter Tutor Bot. Goodbye!');
+        document.getElementById('options').innerHTML = '';
+      } else {
+        const step = steps[currentStep];
+        addBotMessage(step.bot);
+        showOptions(step.options);
+      }
+    }
+
+    // Start the conversation
+    addBotMessage(steps[0].bot);
+    showOptions(steps[0].options);
+  </script>
+</body>
+</html>
